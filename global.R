@@ -1,12 +1,21 @@
 library(leaflet)
 library(ggplot2)
 library(maps)
+library(shiny)
 
 # data all powerplants (pows)
+# setwd('C:/Users/jianhua/Dropbox/test/shiny/powerplants')
 # pows <- read.csv('C:/Users/temp/Dropbox/test/shiny/powerplants/eGRID2012V1_0_year09_DATA.csv')
+# Go <- apply(pows, 1, function(x) paste0(tags$button("goMap", onclick = paste0("return (loc = ", x["ORISPL"], ")"))))
+# pows$Go <- Go
 # save(pows, file='C:/Users/temp/Dropbox/test/shiny/powerplants/eGRID2012V1_0_year09_DATA.rda')
+
 load('eGRID2012V1_0_year09_DATA.rda')
 
+## select only the CAMD powerplants
+# pows <- pows[pows$SOURCEM == 'EPA CAMD', ]
+
+# pows <- pows[sample(5000, 200), ]
 ## match the fuel category with displayed name and point color in the map
 categ <- data.frame(
   PLFUELCT = c("COAL", "OFSL", "OIL", "GAS", ""),
@@ -22,8 +31,7 @@ phy.info <- c('PNAME', 'ORISPL', 'PSTATABB', 'CNTYNAME', 'LAT', 'LON', 'PLPRMFL'
 em <- c('PLNOXAN', 'PLSO2AN', 'PLCO2AN', 'PLCH4AN', 'PLN2OAN')
 emr <- c('PLNOXRTA', 'PLSO2RTA', 'PLCO2RTA', 'PLCH4RTA', 'PLN2ORTA')
 
-pows <- pows[,c(phy.info, em, emr)]
-
+pows <- pows[,c(phy.info, em, emr, 'Go')]
 
 ## the state coordinates, which will be jumped to once the state is selected
 ## var.states is the choice of selectInput

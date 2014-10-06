@@ -1,9 +1,10 @@
-shinyUI(fluidPage(
+# powerplants
 
-    tags$head(
-      includeCSS("styles.css"),
-      includeScript("gomap.js")
-      ),
+library(leaflet)
+shinyUI(fluidPage(
+# 
+#     tags$head(
+#       includeCSS("styles.css")),
     
     absolutePanel(id = "absPanel", class = "modal", fixed = TRUE, draggable = TRUE,
       top = 20, left = 'auto', right = 40, bottom = "auto",
@@ -15,7 +16,7 @@ shinyUI(fluidPage(
     ),
     
     leafletMap("map", width="100%", height = 500,
-      ## map id is from mapbox: https://www.mapbox.com/editor/?id=jianhua1122.j5f28jda#project
+      # map id is from mapbox: https://www.mapbox.com/editor/?id=jianhua1122.j5f28jda#project
       initialTileLayer = "http://{s}.tiles.mapbox.com/v3/jianhua1122.j5f28jda/{z}/{x}/{y}.png",
       options=list(
         center = c(37.45, -93.85),
@@ -30,6 +31,15 @@ shinyUI(fluidPage(
     column(4, plotOutput('Plot1')),
     tags$style(type="text/css", '#Table tfoot {display:none;}')  ## remove the foot of "Table", and the horizontal scrollbar will disappear
   ),
+
   
-  conditionalPanel("false", icon("globe"))
+  conditionalPanel("false", icon("globe")),
+  
+  tags$script('
+    document.getElementById("Table").onclick = function() {
+      var number =  loc;
+      Shiny.onInputChange("mydata", number);
+    };
+  ')
+
 ))
